@@ -59,15 +59,23 @@ module.exports.add = function add(name, phone, email) {
 
     // Ваша невероятная магия здесь
     var resultPhone = checkPhone(phone);
-    if (resultPhone != "" && checkEmail(email) && name != "" && name != undefined) {
-        note = {
-            name: name,
-            phone: phone,
-            email: email
-        };
-        phoneBook.push(note);
+    if (resultPhone != ""){
+        if (checkEmail(email)){
+            if (name != "" && name != undefined){
+                note = {
+                    name: name,
+                    phone: phone,
+                    email: email
+                };
+                phoneBook.push(note);
+            } else {
+                console.log("Invalid name");
+            }
+        } else {
+            console.log("Invalid email");
+        }
     } else {
-        console.log("Invalid data");
+        console.log("Invalid phone");
     }
 };
 
