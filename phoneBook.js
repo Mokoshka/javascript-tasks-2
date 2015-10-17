@@ -64,7 +64,7 @@ module.exports.add = function add(name, phone, email) {
             if (name != "" && name != undefined){
                 note = {
                     name: name,
-                    phone: phone,
+                    phone: resultPhone,
                     email: email
                 };
                 phoneBook.push(note);
@@ -93,10 +93,17 @@ module.exports.find = function find(query) {
             printNote(i);
         }
     } else {
-        var q = new RegExp(query.replace(reNumb, ""));
         for (i=0; i<len; i++){
-            if (q.test(phoneBook[i].name) || q.test(phoneBook[i].email) || q.test(phoneBook[i].phone.replace(reNumb, ""))){
+            if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].email.indexOf(query) > -1){
                 printNote(i);
+            } else {
+                var temp = query.replace(reNumb, "");
+                if (temp != "") {
+                    var q = new RegExp(query.replace(reNumb, ""));
+                    if (q.test(phoneBook[i].phone.replace(reNumb, ""))) {
+                        printNote(i);
+                    }
+                }
             }
         }
     }
@@ -109,10 +116,17 @@ module.exports.remove = function remove(query) {
 
     // Ваша необьяснимая магия здесь
     if (query != undefined) {
-        var q = new RegExp(query.replace(reNumb, ""));
         for (var i=phoneBook.length-1; i>=0; i--){
-            if (q.test(phoneBook[i].name) || q.test(phoneBook[i].email) || q.test(phoneBook[i].phone.replace(reNumb, ""))){
+            if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].email.indexOf(query) > -1){
                 phoneBook.splice(i, 1);
+            } else {
+                var temp = query.replace(reNumb, "");
+                if (temp != "") {
+                    var q = new RegExp(query.replace(reNumb, ""));
+                    if (q.test(phoneBook[i].phone.replace(reNumb, ""))) {
+                        phoneBook.splice(i, 1);
+                    }
+                }
             }
         }
     }
@@ -138,4 +152,3 @@ module.exports.showTable = function showTable() {
     // Ваша чёрная магия здесь
 
 };
-
